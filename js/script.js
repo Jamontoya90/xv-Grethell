@@ -1,5 +1,5 @@
 // CONFIGURACIÓN: sustituye este número por el WhatsApp de confirmaciones.
-const WHATSAPP_NUMBER = "528712427294"; // 8662557778 Código de país + número, sin espacios ni signos.
+const WHATSAPP_NUMBER = "528662557778"; // 8662557778 Código de país + número, sin espacios ni signos.
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyL2R_HFNaAQ716uoasi2NnmOpibbWGVctwc2fYnm68Yfrjm4AULIm_UytwKF8oD6AAjw/exec";
 const EVENT_DATE = new Date("2026-12-19T21:00:00-06:00");
 
