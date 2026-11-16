@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#100b10">
+  <meta name="description" content="Acompáñanos a celebrar los XV años de Grethell Alessandra.">
+  <title>Mis XV | Grethell Alessandra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <audio id="backgroundMusic" preload="none" loop>
+    <source src="assets/audio/la-medalla.m4a" type="audio/mp4">
+    Tu navegador no soporta audio.
+  </audio>
+
+  <button class="music-button" id="musicButton" aria-label="Reproducir música" title="Música">
+    <span class="music-icon">♫</span><span id="musicLabel">Reproducir música</span>
+  </button>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-shade"></div>
+      <div class="hero-content">
+        <p class="eyebrow">Una noche para recordar</p>
+        <div class="ornament">✦ ✧ ✦</div>
+        <p class="hero-pretitle">Mis XV años</p>
+        <h1>Grethell <span>Alessandra</span></h1>
+        <p class="hero-date">19 · DICIEMBRE · 2026</p>
+        <div class="ornament">✦ ❀ ✦</div>
+        <button class="primary-button" id="openInvitation">Abrir invitación</button>
+        <p class="scroll-note">Desliza para descubrir</p>
+      </div>
+    </section>
+
+    <section class="intro section reveal" id="bienvenida">
+      <p class="eyebrow">Con la ilusión de un sueño</p>
+      <h2>Hay momentos que se vuelven eternos</h2>
+      <p class="intro-copy">Hoy comienza un capítulo muy especial de mi vida y quiero compartirlo contigo. Acompáñame a celebrar una noche llena de alegría, magia y recuerdos inolvidables.</p>
+      <div class="signature">Grethell</div>
+      <div class="ornament">✦ ❀ ✦</div>
+    </section>
+
+    <section class="countdown-section section reveal">
+      <p class="eyebrow">La espera está por terminar</p>
+      <h2>Cuenta regresiva</h2>
+      <div class="countdown" id="countdown">
+        <div><strong id="days">--</strong><span>Días</span></div>
+        <div><strong id="hours">--</strong><span>Horas</span></div>
+        <div><strong id="minutes">--</strong><span>Minutos</span></div>
+        <div><strong id="seconds">--</strong><span>Segundos</span></div>
+      </div>
+      <p class="date-line">Sábado 19 de diciembre de 2026</p>
+    </section>
+
+    <section class="event-section section reveal" id="evento">
+      <p class="eyebrow">Celebremos juntos</p>
+      <h2>Detalles del evento</h2>
+      <div class="event-grid">
+        <article class="event-card">
+          <div class="event-symbol">✧</div>
+          <p class="event-kicker">Ceremonia religiosa</p>
+          <h3>Santuario de Guadalupe</h3>
+          <p>Colonia Guadalupe</p>
+          <p class="event-time">7:00 p. m.</p>
+          <a class="text-link" href="https://maps.app.goo.gl/CWVZ1YJHng2DpQcEA" target="_blank" rel="noopener">Ver ubicación ↗</a>
+        </article>
+        <div class="event-heart">❦</div>
+        <article class="event-card">
+          <div class="event-symbol">✧</div>
+          <p class="event-kicker">Recepción</p>
+          <h3>Cataleya Eventos</h3>
+          <p>10 de Mayo #122, Col. 10 de Mayo<br>Frontera, Coahuila</p>
+          <p class="event-time">9:00 p. m. – 2:00 a. m.</p>
+          <a class="text-link" href="https://www.google.com/maps/search/?api=1&query=Cataleya+Eventos+Frontera+Coahuila" target="_blank" rel="noopener">Ver ubicación ↗</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="gallery-section section reveal" id="galeria">
+      <p class="eyebrow">Pequeños instantes, grandes recuerdos</p>
+      <h2>Mi galería</h2>
+      <div class="gallery-slider">
+        <button class="gallery-arrow prev" id="prevPhoto" aria-label="Fotografía anterior">‹</button>
+        <div class="gallery-window">
+          <div class="gallery-track" id="galleryTrack">
+            <img src="assets/img/Foto1.jpeg" alt="Fotografía de Grethell 1">
+            <img src="assets/img/Foto2.jpeg" alt="Fotografía de Grethell 2">
+            <img src="assets/img/Foto3.jpeg" alt="Fotografía de Grethell 3">
+            <img src="assets/img/Foto4.jpeg" alt="Fotografía de Grethell 4">
+            <img src="assets/img/Foto5.jpeg" alt="Fotografía de Grethell 5">
+            <img src="assets/img/Foto6.jpeg" alt="Fotografía de Grethell 6">
+            <img src="assets/img/Foto7.jpeg" alt="Fotografía de Grethell 7">
+            <img src="assets/img/Foto8.jpeg" alt="Fotografía de Grethell 8">
+            <img src="assets/img/Foto9.jpeg" alt="Fotografía de Grethell 9">
+            <img src="assets/img/Foto10.jpeg" alt="Fotografía de Grethell 10">
+            <img src="assets/img/Foto11.jpeg" alt="Fotografía de Grethell 11">
+            <img src="assets/img/Foto12.jpeg" alt="Fotografía de Grethell 12">
+            <img src="assets/img/Foto13.jpeg" alt="Fotografía de Grethell 13">
+          </div>
+        </div>
+        <button class="gallery-arrow next" id="nextPhoto" aria-label="Fotografía siguiente">›</button>
+      </div>
+      <div class="gallery-dots" id="galleryDots"></div>
+      <p class="gallery-hint">Las fotografías de esta versión son espacios provisionales.</p>
+    </section>
+
+    <section class="dress-section section reveal">
+      <p class="eyebrow">Un detalle especial</p>
+      <h2>Código de vestimenta</h2>
+      <div class="dress-icon">◈</div>
+      <p class="dress-code">Formal</p>
+      <p>El código de vestimenta es negro. Te pedimos evitar los tonos rosas.</p>
+      <p class="dress-note">Por favor, evita también los tonos rosas.</p>
+    </section>
+
+    <section class="gift-section section reveal">
+      <p class="eyebrow">Tu presencia es mi mejor regalo</p>
+      <h2>Lluvia de sobres</h2>
+      <div class="gift-symbol">✧</div>
+      <p>Si deseas obsequiarme algo, habrá un espacio destinado para lluvia de sobres.</p>
+    </section>
+
+    <section class="rsvp-section section reveal" id="confirmacion">
+  <p class="eyebrow">Será un honor contar contigo</p>
+  <h2>Confirma tu asistencia</h2>
+
+  <p class="rsvp-intro">
+    Indica cuántas personas asistirán y sus nombres.
+    Tu confirmación se registrará y podrás enviarla también por WhatsApp.
+  </p>
+
+  <p id="familyGreeting" class="family-greeting" aria-live="polite">
+    Verificando invitación...
+  </p>
+
+  <p id="rsvpStatus" class="rsvp-status" aria-live="polite"></p>
+
+<button
+  type="button"
+  id="editRsvpButton"
+  class="secondary-button"
+  hidden
+>
+  Modificar mi respuesta
+</button>
+
+  <form id="rsvpForm" class="rsvp-form">
+
+    <label for="guestName">Nombre de quien confirma</label>
+    <input
+      id="guestName"
+      name="guestName"
+      type="text"
+      placeholder="Escribe tu nombre"
+      maxlength="120"
+      required
+    >
+
+    <label for="guestCount">¿Cuántas personas asistirán?</label>
+    <input
+      id="guestCount"
+      name="guestCount"
+      type="number"
+      min="1"
+      max="200"
+      value="1"
+      required
+    >
+
+    <label for="attendeeNames">Nombres de quienes asistirán</label>
+    <textarea
+      id="attendeeNames"
+      name="attendeeNames"
+      rows="3"
+      placeholder="Escribe los nombres de los asistentes"
+      maxlength="2000"
+      required
+    ></textarea>
+
+    <button class="primary-button" type="submit" disabled>
+      Confirmar por WhatsApp
+    </button>
+
+  </form>
+</section>
+
+   
+<section class="wishes-section section reveal" id="buenos-deseos">
+
+  <p class="eyebrow">Un recuerdo de esta noche</p>
+  <h2>Déjame tus buenos deseos</h2>
+
+  <p class="wishes-intro">
+    Comparte unas palabras para Grethell.
+    Será un recuerdo que podrá conservar siempre.
+  </p>
+
+  <form id="wishesForm" class="wishes-form">
+
+    <label for="wishName">Tu nombre</label>
+    <input
+      type="text"
+      id="wishName"
+      maxlength="120"
+      placeholder="Escribe tu nombre"
+      required
+    >
+
+    <label for="wishMessage">Tu mensaje</label>
+    <textarea
+      id="wishMessage"
+      rows="4"
+      maxlength="1000"
+      placeholder="Escribe tus buenos deseos para Grethell..."
+      required
+    ></textarea>
+
+    <button class="primary-button" type="submit" disabled>
+      Enviar buenos deseos
+    </button>
+
+    <p id="wishStatus" class="wish-status" aria-live="polite"></p>
+
+  </form>
+
+  <div class="wishes-divider">
+    <span>✦</span>
+    <span>Mensajes para Grethell</span>
+    <span>✦</span>
+  </div>
+
+  <div id="wishesList" class="wishes-list">
+    <p class="coming-soon">Cargando buenos deseos...</p>
+  </div>
+
+</section>
+
+
+    <footer class="footer">
+      <div class="ornament">✦ ❀ ✦</div>
+      <p class="footer-script">Grethell Alessandra</p>
+      <p>Mis XV años · 19.12.2026</p>
+      <small>Con cariño, gracias por ser parte de este día.</small>
+    </footer>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
