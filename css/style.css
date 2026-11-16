@@ -24,7 +24,7 @@ button, input, textarea { font: inherit; }
   overflow: hidden;
 
   background:
-    url('../assets/img/Foto16.jpeg') center 38%/cover no-repeat,
+    url('../assets/img/Foto18.jpeg') center 38%/cover no-repeat,
     radial-gradient(circle at 50% 35%, #583044, #100b10 70%);
 }
 .hero::before, .hero::after {
