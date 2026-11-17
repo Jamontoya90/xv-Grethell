@@ -63,9 +63,9 @@ function consultarEstadoConfirmacion(codigo) {
 
 
 // Bloquear o habilitar el formulario.
+
 function establecerEstadoConfirmacion(data) {
 
-  const name = document.getElementById("guestName");
   const count = document.getElementById("guestCount");
   const attendees = document.getElementById("attendeeNames");
 
@@ -75,16 +75,20 @@ function establecerEstadoConfirmacion(data) {
   const editButton = document.getElementById("editRsvpButton");
   const status = document.getElementById("rsvpStatus");
 
-  const campos = [name, count, attendees];
+  const campos = [count, attendees];
 
   respuestaConfirmada = data.confirmado === true;
   modificandoRespuesta = false;
 
   if (respuestaConfirmada) {
 
-    name.value = data.nombre || "";
     count.value = data.cantidad || 1;
-    attendees.value = data.asistentes || "";
+
+    if (invitadoActual && Number(invitadoActual.pases) === 1) {
+      attendees.value = invitadoActual.familia;
+    } else {
+      attendees.value = data.asistentes || "";
+    }
 
     campos.forEach(campo => campo.disabled = true);
 
@@ -156,17 +160,19 @@ let invitadoActual = null;
  * CONFIGURAR PASES DE LA INVITACIÓN
  *******************************************************/
 
+
 function configurarPases(pases) {
 
   const count = document.getElementById("guestCount");
   const label = document.getElementById("guestCountLabel");
   const hint = document.getElementById("guestCountHint");
+  const namesGroup = document.getElementById("attendeeNamesGroup");
+  const attendees = document.getElementById("attendeeNames");
 
   const valor = String(pases || "").trim().toLowerCase();
 
   if (valor === "libre") {
 
-    // Invitación con cantidad libre: máximo 10 personas.
     count.readOnly = false;
     count.min = "1";
     count.max = "10";
@@ -180,9 +186,11 @@ function configurarPases(pases) {
     hint.textContent =
       "Tu invitación tiene pases libres. Puedes registrar de 1 a 10 personas.";
 
+    namesGroup.hidden = false;
+    attendees.required = true;
+
   } else {
 
-    // Invitación con cantidad fija.
     const cantidadFija = Number(valor);
 
     if (
@@ -198,13 +206,32 @@ function configurarPases(pases) {
     count.max = String(cantidadFija);
     count.readOnly = true;
 
-    label.textContent = "Cantidad de pases asignados";
+    if (cantidadFija === 1) {
 
-    hint.textContent =
-      `Esta invitación tiene exactamente ${cantidadFija} pases asignados.`;
+      label.textContent = "Tu invitación es individual";
+
+      hint.textContent = "Tienes asignado 1 pase.";
+
+      namesGroup.hidden = true;
+      attendees.required = false;
+      attendees.value = "";
+
+    } else {
+
+      label.textContent = "Cantidad de pases asignados";
+
+      hint.textContent =
+        `Esta invitación tiene exactamente ${cantidadFija} pases asignados.`;
+
+      namesGroup.hidden = false;
+      attendees.required = true;
+
+    }
+
   }
 
 }
+
 
 
 function consultarInvitado(codigo) {
@@ -250,6 +277,7 @@ function consultarInvitado(codigo) {
 }
 
 
+
 async function inicializarInvitacion() {
 
   const greeting = document.getElementById("familyGreeting");
@@ -264,32 +292,15 @@ async function inicializarInvitacion() {
     greeting.textContent =
       "No encontramos un código de invitación válido.";
 
-    try {
+    submitButton.disabled = true;
+    document.querySelector('#wishesForm button[type="submit"]').disabled = true;
 
-  const estado = await consultarEstadoConfirmacion(codigo);
-
-  if (!estado.success) {
-    throw new Error("No se pudo verificar la confirmación.");
-  }
-
-  establecerEstadoConfirmacion(estado);
-
-} catch (error) {
-
-  console.error(error);
-
-  submitButton.disabled = true;
-
-  document.getElementById("rsvpStatus").textContent =
-    "No pudimos verificar tu confirmación. Recarga la página.";
-
-}
     return;
-
   }
 
   try {
 
+    // Primero identificar al invitado.
     const resultado = await consultarInvitado(codigo);
 
     if (!resultado.success) {
@@ -297,10 +308,56 @@ async function inicializarInvitacion() {
     }
 
     invitadoActual = {
-  codigo: resultado.codigo,
-  familia: resultado.familia,
-  pases: resultado.pases
-};
+      codigo: resultado.codigo,
+      familia: resultado.familia,
+      pases: resultado.pases
+    };
+
+    // Configurar los campos según los pases asignados.
+    configurarPases(invitadoActual.pases);
+
+    // Saludo singular o plural.
+    const esIndividual =
+      String(invitadoActual.pases).trim() === "1";
+
+    greeting.textContent = esIndividual
+      ? `¡Bienvenido, ${invitadoActual.familia}!`
+      : `¡Bienvenidos, ${invitadoActual.familia}!`;
+
+    // Habilitar el libro de buenos deseos.
+    document.querySelector(
+      '#wishesForm button[type="submit"]'
+    ).disabled = false;
+
+    // Consultar si esta familia ya confirmó.
+    const estado = await consultarEstadoConfirmacion(codigo);
+
+    if (!estado.success) {
+      throw new Error("No se pudo verificar la confirmación.");
+    }
+
+    establecerEstadoConfirmacion(estado);
+
+  } catch (error) {
+
+    console.error("Error al inicializar la invitación:", error);
+
+    greeting.textContent =
+      "No pudimos validar esta invitación. Revisa el enlace.";
+
+    submitButton.disabled = true;
+
+    document.querySelector(
+      '#wishesForm button[type="submit"]'
+    ).disabled = true;
+
+    document.getElementById("rsvpStatus").textContent =
+      "No pudimos verificar tu invitación. Recarga la página.";
+
+  }
+
+}
+
 
 // Configurar el campo según los pases asignados.
 configurarPases(invitadoActual.pases);
@@ -429,6 +486,7 @@ window.addEventListener("load", renderGallery);
  * CONFIRMAR O MODIFICAR ASISTENCIA
  ********************************************************/
 
+
 document.getElementById("rsvpForm").addEventListener("submit", async (event) => {
 
   event.preventDefault();
@@ -440,52 +498,61 @@ document.getElementById("rsvpForm").addEventListener("submit", async (event) => 
 
   if (fechaLimiteCumplida()) {
     alert("El periodo de confirmación ha finalizado.");
+
     establecerEstadoConfirmacion({
       confirmado: respuestaConfirmada
     });
+
     return;
   }
 
   const form = event.currentTarget;
   const button = form.querySelector('button[type="submit"]');
 
-  const nombre = document.getElementById("guestName").value.trim();
   const cantidad = Number(document.getElementById("guestCount").value);
-  const asistentes = document.getElementById("attendeeNames").value.trim();
 
-  
-const pases = String(invitadoActual.pases).trim().toLowerCase();
+  const pases = String(invitadoActual.pases).trim().toLowerCase();
 
-let cantidadValida = false;
+  const esIndividual = pases === "1";
 
-if (pases === "libre") {
+  // El nombre de la familia se utiliza como nombre de quien confirma.
+  const nombre = invitadoActual.familia;
 
-  cantidadValida =
-    Number.isInteger(cantidad) &&
-    cantidad >= 1 &&
-    cantidad <= 10;
+  // En invitaciones individuales se registra automáticamente el nombre.
+  // En las demás se toman los nombres escritos por los invitados.
+  const asistentes = esIndividual
+    ? invitadoActual.familia
+    : document.getElementById("attendeeNames").value.trim();
 
-} else {
+  let cantidadValida = false;
 
-  const cantidadFija = Number(pases);
+  if (pases === "libre") {
 
-  cantidadValida =
-    Number.isInteger(cantidad) &&
-    cantidad === cantidadFija;
+    cantidadValida =
+      Number.isInteger(cantidad) &&
+      cantidad >= 1 &&
+      cantidad <= 10;
 
-}
+  } else {
 
-if (!nombre || !asistentes || !cantidadValida) {
+    const cantidadFija = Number(pases);
 
-  alert(
-    pases === "libre"
-      ? "Puedes registrar entre 1 y 10 personas."
-      : `Esta invitación tiene exactamente ${pases} pases asignados.`
-  );
+    cantidadValida =
+      Number.isInteger(cantidad) &&
+      cantidad === cantidadFija;
 
-  return;
-}
+  }
 
+  if (!asistentes || !cantidadValida) {
+
+    alert(
+      pases === "libre"
+        ? "Puedes registrar entre 1 y 10 personas e indicar sus nombres."
+        : `Esta invitación tiene exactamente ${pases} pases asignados.`
+    );
+
+    return;
+  }
 
   const modificar = modificandoRespuesta;
 
@@ -501,9 +568,8 @@ if (!nombre || !asistentes || !cantidadValida) {
   const message = [
     "Hola, confirmo nuestra asistencia a los XV años de Grethell.",
     "",
-    `Familia: ${invitadoActual.familia}`,
+    `Invitación: ${invitadoActual.familia}`,
     `Código: ${invitadoActual.codigo}`,
-    `Persona que confirma: ${nombre}`,
     `Total de asistentes: ${cantidad}`,
     `Nombres: ${asistentes}`,
     modificar ? "Esta es una modificación de nuestra confirmación." : ""
@@ -515,8 +581,8 @@ if (!nombre || !asistentes || !cantidadValida) {
   button.disabled = true;
   button.textContent = "Guardando respuesta...";
 
-  // Abrir una ventana para WhatsApp durante el clic del usuario.
-const whatsappWindow = window.open("about:blank", "_blank");
+  // Abrir una ventana durante el clic del usuario.
+  const whatsappWindow = window.open("about:blank", "_blank");
 
   try {
 
@@ -529,7 +595,7 @@ const whatsappWindow = window.open("about:blank", "_blank");
       body: JSON.stringify(data)
     });
 
-    // Verificar en Sheets que los datos nuevos estén guardados.
+    // Verificar que la información se haya guardado en Sheets.
     let estado = null;
 
     for (let intento = 0; intento < 4; intento++) {
@@ -571,16 +637,16 @@ const whatsappWindow = window.open("about:blank", "_blank");
 
     // Abrir WhatsApp para enviar la notificación.
     if (whatsappWindow) {
-  whatsappWindow.location.href = whatsappURL;
-}
+      whatsappWindow.location.href = whatsappURL;
+    }
 
   } catch (error) {
 
     console.error(error);
 
     if (whatsappWindow) {
-  whatsappWindow.close();
-}
+      whatsappWindow.close();
+    }
 
     alert(
       "No pudimos verificar el registro. " +

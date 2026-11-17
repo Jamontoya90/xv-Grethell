@@ -151,40 +151,34 @@
   Modificar mi respuesta
 </button>
 
-  <form id="rsvpForm" class="rsvp-form">
 
-    <label for="guestName">Nombre de quien confirma</label>
-    <input
-      id="guestName"
-      name="guestName"
-      type="text"
-      placeholder="Escribe tu nombre"
-      maxlength="120"
-      required
-    >
+<form id="rsvpForm" class="rsvp-form">
 
-    
-<label for="guestCount" id="guestCountLabel">
-  ¿Cuántas personas asistirán?
-</label>
+  <label for="guestCount" id="guestCountLabel">
+    ¿Cuántas personas asistirán?
+  </label>
 
-<input
-  id="guestCount"
-  name="guestCount"
-  type="number"
-  min="1"
-  max="10"
-  value="1"
-  readonly
-  required
->
+  <input
+    id="guestCount"
+    name="guestCount"
+    type="number"
+    min="1"
+    max="10"
+    value="1"
+    readonly
+    required
+  >
 
-<p id="guestCountHint" class="rsvp-intro">
-  Verificando los pases asignados a tu invitación...
-</p>
+  <p id="guestCountHint" class="rsvp-intro">
+    Verificando los pases asignados a tu invitación...
+  </p>
 
+  <div id="attendeeNamesGroup">
 
-    <label for="attendeeNames">Nombres de quienes asistirán</label>
+    <label for="attendeeNames">
+      Nombres de quienes asistirán
+    </label>
+
     <textarea
       id="attendeeNames"
       name="attendeeNames"
@@ -194,11 +188,14 @@
       required
     ></textarea>
 
-    <button class="primary-button" type="submit" disabled>
-      Confirmar por WhatsApp
-    </button>
+  </div>
 
-  </form>
+  <button class="primary-button" type="submit" disabled>
+    Confirmar por WhatsApp
+  </button>
+
+</form>
+
 </section>
 
    
