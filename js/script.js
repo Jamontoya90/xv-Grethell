@@ -359,29 +359,6 @@ async function inicializarInvitacion() {
 }
 
 
-// Configurar el campo según los pases asignados.
-configurarPases(invitadoActual.pases);
-
-    greeting.textContent =
-      `¡Bienvenidos, ${resultado.familia}!`;
-
-    submitButton.disabled = false;
-    document.querySelector(
-  '#wishesForm button[type="submit"]'
-).disabled = false;
-
-  } catch (error) {
-
-    console.error("Error al identificar la familia:", error);
-
-    greeting.textContent =
-      "No pudimos validar esta invitación. Revisa el enlace.";
-
-    submitButton.disabled = true;
-
-  }
-
-}
 
 inicializarInvitacion();
 
