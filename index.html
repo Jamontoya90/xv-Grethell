@@ -163,16 +163,26 @@
       required
     >
 
-    <label for="guestCount">¿Cuántas personas asistirán?</label>
-    <input
-      id="guestCount"
-      name="guestCount"
-      type="number"
-      min="1"
-      max="200"
-      value="1"
-      required
-    >
+    
+<label for="guestCount" id="guestCountLabel">
+  ¿Cuántas personas asistirán?
+</label>
+
+<input
+  id="guestCount"
+  name="guestCount"
+  type="number"
+  min="1"
+  max="10"
+  value="1"
+  readonly
+  required
+>
+
+<p id="guestCountHint" class="rsvp-intro">
+  Verificando los pases asignados a tu invitación...
+</p>
+
 
     <label for="attendeeNames">Nombres de quienes asistirán</label>
     <textarea

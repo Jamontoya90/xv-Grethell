@@ -8,7 +8,7 @@ const EVENT_DATE = new Date("2026-12-19T21:00:00-06:00");
  * CONTROL DE CONFIRMACIONES Y FECHA LÍMITE
  ********************************************************/
 
-const RSVP_DEADLINE = new Date("2026-12-10T00:00:00-06:00");
+const RSVP_DEADLINE = new Date("2026-12-11T00:00:00-06:00");
 
 let respuestaConfirmada = false;
 let modificandoRespuesta = false;
@@ -151,6 +151,62 @@ document.getElementById("editRsvpButton").addEventListener("click", () => {
 
 let invitadoActual = null;
 
+
+/*******************************************************
+ * CONFIGURAR PASES DE LA INVITACIÓN
+ *******************************************************/
+
+function configurarPases(pases) {
+
+  const count = document.getElementById("guestCount");
+  const label = document.getElementById("guestCountLabel");
+  const hint = document.getElementById("guestCountHint");
+
+  const valor = String(pases || "").trim().toLowerCase();
+
+  if (valor === "libre") {
+
+    // Invitación con cantidad libre: máximo 10 personas.
+    count.readOnly = false;
+    count.min = "1";
+    count.max = "10";
+
+    if (!count.value || Number(count.value) > 10) {
+      count.value = "1";
+    }
+
+    label.textContent = "¿Cuántas personas asistirán?";
+
+    hint.textContent =
+      "Tu invitación tiene pases libres. Puedes registrar de 1 a 10 personas.";
+
+  } else {
+
+    // Invitación con cantidad fija.
+    const cantidadFija = Number(valor);
+
+    if (
+      !Number.isInteger(cantidadFija) ||
+      cantidadFija < 1 ||
+      cantidadFija > 10
+    ) {
+      throw new Error("La cantidad de pases de esta invitación no es válida.");
+    }
+
+    count.value = cantidadFija;
+    count.min = String(cantidadFija);
+    count.max = String(cantidadFija);
+    count.readOnly = true;
+
+    label.textContent = "Cantidad de pases asignados";
+
+    hint.textContent =
+      `Esta invitación tiene exactamente ${cantidadFija} pases asignados.`;
+  }
+
+}
+
+
 function consultarInvitado(codigo) {
 
   return new Promise((resolve, reject) => {
@@ -241,9 +297,13 @@ async function inicializarInvitacion() {
     }
 
     invitadoActual = {
-      codigo: resultado.codigo,
-      familia: resultado.familia
-    };
+  codigo: resultado.codigo,
+  familia: resultado.familia,
+  pases: resultado.pases
+};
+
+// Configurar el campo según los pases asignados.
+configurarPases(invitadoActual.pases);
 
     greeting.textContent =
       `¡Bienvenidos, ${resultado.familia}!`;
@@ -393,16 +453,39 @@ document.getElementById("rsvpForm").addEventListener("submit", async (event) => 
   const cantidad = Number(document.getElementById("guestCount").value);
   const asistentes = document.getElementById("attendeeNames").value.trim();
 
-  if (
-    !nombre ||
-    !asistentes ||
-    !Number.isInteger(cantidad) ||
-    cantidad < 1 ||
-    cantidad > 200
-  ) {
-    alert("Revisa los datos de tu confirmación.");
-    return;
-  }
+  
+const pases = String(invitadoActual.pases).trim().toLowerCase();
+
+let cantidadValida = false;
+
+if (pases === "libre") {
+
+  cantidadValida =
+    Number.isInteger(cantidad) &&
+    cantidad >= 1 &&
+    cantidad <= 10;
+
+} else {
+
+  const cantidadFija = Number(pases);
+
+  cantidadValida =
+    Number.isInteger(cantidad) &&
+    cantidad === cantidadFija;
+
+}
+
+if (!nombre || !asistentes || !cantidadValida) {
+
+  alert(
+    pases === "libre"
+      ? "Puedes registrar entre 1 y 10 personas."
+      : `Esta invitación tiene exactamente ${pases} pases asignados.`
+  );
+
+  return;
+}
+
 
   const modificar = modificandoRespuesta;
 
